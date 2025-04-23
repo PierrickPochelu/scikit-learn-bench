@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools", "numpy", "scikit-learn"]
+
+[project]
+name = "scikit_learn_bench"
+version = "0.0.1"
+authors = [
+  { name="Pierrick Pochelu", email="pierrick.pochelu@gmail.com" },
+]
+description = "ML Benchmark used to compare platforms"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://ghttps://github.com/PierrickPochelu/scikit-learn-bench"
+"Bug Tracker" = "https://github.com/PierrickPochelu/scikit-learn-bench/issues"
