@@ -27,7 +27,7 @@ jobs:
     - name: Test with pytest
       run: |
         export PYTHONPATH=${PWD}/src:${PYTHONPATH}
-        pytest
+        pytest --junitxml=reports/test-code-results.xml
     - name: Upload test results
       uses: actions/upload-artifact@v4
       with:
@@ -82,10 +82,5 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install dist/*.whl
           echo "Testing the wheel"
-          scikit_learn_bench
-          python3 -c "import scikit_learn_bench"
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test2-results
-          path: reports/test2-results.xml
+          python3 -c "import scikit_learn_bench" && echo "Import OK" || { echo "Import failed!"; exit 1; }
+          scikit_learn_bench && echo "CLI OK" || { echo "CLI failed!"; exit 1; }
