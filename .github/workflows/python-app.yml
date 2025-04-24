@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   test-code:
+    name: Test Code
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -60,7 +61,6 @@ jobs:
         name: dist
         path: dist/*.whl
 
-    
   test-wheel:
     name: Test Built Wheel
     runs-on: ubuntu-latest
