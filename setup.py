@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='scikit-learn-bench',
-    version='0.0.1',
+    version='0.1.0',
     description='A benchmarking suite for ML algorithms with profiling support',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
