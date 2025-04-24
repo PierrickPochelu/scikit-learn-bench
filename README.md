@@ -6,6 +6,12 @@ This tool offers an easy way to evaluate models across multiple ML categories an
 
 ---
 
+## 📦 Installation
+
+```
+pip3 install scikit_learn_bench
+```
+
 ## 🚀 Features
 
 ### 📊 Data Generation
@@ -70,15 +76,18 @@ Choose one of three profiler types:
 
 ### CLI
 
-Installing scikit_learn_bench add it in your path and can be directly called
+After installing `scikit_learn_bench`, you can invoke it directly from the command line:
 
 ```commandline
-pierrick@laptop:~$ pip3 install ./dist/scikit_learn_bench-0.0.1.tar.gz
+pierrick@laptop:~$ pip3 install scikit_learn_bench
 pierrick@laptop:~$ scikit_learn_bench
 ```
 
-For more information: `scikit_learn_bench --help`
+For detailed usage and options, run:
 
+```commandline
+scikit_learn_bench --help
+```
 
 ### Programming interface (advanced)
 ```python
@@ -117,8 +126,7 @@ dAditionally, the `usage_example/` directory contains scripts for advanced analy
 * Scalability studies examining how performance varies with data size (samples, features, output size)
 * Analysis of algorithm performance as the number of CPU cores increases, helping identify which algorithms benefit most from parallel processing
 
-## 📦 Installation
-Work in progress: Incoming pip install instructions.
+
 
 ## 📚 Citing scikit-learn-bench
 Work in progress: BibTeX / reference for citing this repo.
