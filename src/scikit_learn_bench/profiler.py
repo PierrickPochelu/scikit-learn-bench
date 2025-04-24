@@ -4,9 +4,10 @@ import tracemalloc
 import cProfile
 import pstats
 from functools import wraps
-from typing import Any, Callable, Dict, Tuple, Union
+from typing import Any, Callable, Tuple
 
-from src import CONST
+from src.scikit_learn_bench import CONST
+
 
 # ---------------------------
 # Strategy Base

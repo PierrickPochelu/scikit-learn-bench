@@ -22,10 +22,8 @@ from sklearn.base import RegressorMixin, ClassifierMixin, ClusterMixin, Transfor
 import numpy as np
 from typing import Callable, Dict, Tuple, Union, List
 
-from src import display
-from src import CONST
-from src import profile
-from src import default_params
+from src.scikit_learn_bench import default_params, profiler, CONST, display
+
 
 def _bench_1_model(
         model_constructor: Callable,
@@ -34,7 +32,7 @@ def _bench_1_model(
         data_params: Dict[str, int],
         max_time: float,
         results: Dict[str, Union[Tuple[float, float], Tuple[float, float, float, float]]],
-        profiler: profile.ProfilerStrategy
+        profiler: profiler.ProfilerStrategy
 ) -> None:
     """
     Train and benchmark a single machine learning model using a given profiler strategy.
@@ -189,7 +187,7 @@ def bench(num_samples: int = 1000,
     fix_comp_time : float
         Max time allowed for training each model (in seconds).
     ml_type : str
-        Type of models: 'cla' (default), 'reg', 'clu', 'tra'.
+        Type of models: 'cla' (default), 'reg', 'clu', 'tra', 'all'.
     profiler_type : str, optional
         Type of profiler: "time" (default), "timememory", "timeline".
     table_print : bool, optional
@@ -223,17 +221,17 @@ def bench(num_samples: int = 1000,
 
 
     if profiler_type=="time":
-        profiler=profile.TimeProfiler()
+        prof= profiler.TimeProfiler()
     elif profiler_type=="timememory":
-        profiler=profile.TimeMemoryProfiler()
+        prof= profiler.TimeMemoryProfiler()
     elif profiler_type=="timeline":
-        profiler=profile.TimeLineProfiler(line_profiler_path)
+        prof= profiler.TimeLineProfiler(line_profiler_path)
     else:
         raise ValueError("Error profiler type not understood: ", profiler_type)
 
     results = {}
     for _, constructor in model_constructors:
-        _bench_1_model(constructor, X_train, y_train, data_params, fix_comp_time, results, profiler)
+        _bench_1_model(constructor, X_train, y_train, data_params, fix_comp_time, results, prof)
 
     if table_print:
         display.print_table(results, table_print_sort_crit)

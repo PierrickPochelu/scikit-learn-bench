@@ -1,6 +1,6 @@
 # scikit-learn-bench
 
-Benchmark **150+ scikit-learn Machine Learning algorithms** at once — in just a few seconds.
+Benchmark **160 scikit-learn Machine Learning algorithms** at once — in just a few seconds.
 
 This tool offers an easy way to evaluate models across multiple ML categories and profiling strategies.
 
@@ -20,14 +20,18 @@ Easily control the characteristics of synthetic datasets:
 
 ### 🧠 ML Algorithm Types
 
-| Type | Label | Description |
-|------|-------|-------------|
-| Regressors | `"reg"` | 53 algorithms with `.fit` and `.predict` |
-| Classifiers | `"cla"` | 41 algorithms with `.fit` and `.predict` |
-| Clustering | `"clu"` | 12 clustering algorithms (`predict` supported for 6) |
-| Transformers | `"tra"` | 56 preprocessing/transform models (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
+| Type | Label | Description                                                       |
+|------|-------|-------------------------------------------------------------------|
+| Regressors | `"reg"` | 51 algorithms with `.fit` and `.predict`                          |
+| Classifiers | `"cla"` | 41 algorithms with `.fit` and `.predict`                          |
+| Clustering | `"clu"` | 12 clustering algorithms (`predict` supported for 6)              |
+| Transformers | `"tra"` | 57 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
 
-> The exact counts may vary depending on your installed `scikit-learn` version.
+
+> Some algorithms are callable in some specific conditions. 29 regressors manages multiple target regressions, 22 regressors are scalar only.
+
+> The exact counts may vary depending on your installed `scikit-learn` version (here 1.3.0) and other dependencies.
+
 
 ---
 
@@ -60,31 +64,59 @@ Choose one of three profiler types:
 
 ## 🧪 Example Usage
 
+### CLI
+
+Installing scikit_learn_bench add it in your path and can be directly called
+
+```commandline
+pierrick@laptop:~$ pip3 install ./dist/scikit_learn_bench-0.0.1.tar.gz
+pierrick@laptop:~$ scikit_learn_bench
+```
+
+After 4 seconds, output:
+
+
+
+For more information: `scikit_learn_bench --help`
+
+
+
+### Programming interface (advanced)
 ```python
-bench(
+from scikit_learn_bench.core import bench
+scores=bench(
     num_samples=10,
     num_features=2,
-    num_output=num_output,
+    num_output=2,
     fix_comp_time=0.1,
-    ml_type=ml_category,
+    ml_type="cla",
     profiler_type="timememory",
     table_print=True
 )
 ```
 
-Sample Output:
+This function returns a dictionary with performance metrics for each algorithm, such as:
+```
+{
+    'AdaBoostClassifier': (4454.128, 48093.051, 94.06, 19.29),
+    'BaggingClassifier': (282.16, 6696.015, 96.019, 162.843),
+    ...
+}
+```
 
-```
-Algorithm                     Train/s   Train Mem  Infer/s  Infer Mem
-----------------------------------------------------------------------
-RandomForestClassifier         41.5     1674       92.6     78.8
-ExtraTreesClassifier           69.7     2146       89.0     122
-StackingClassifier             125      1463       222      11.4
-[...]
-NearestCentroid                29314    14804      10.0     13.8
-KNeighborsClassifier           30762    23863      18.4     27.0
-DummyClassifier                82341    540676     11.6     57.6
-```
+The output includes:
+* Train/s: Training speed (samples per second)
+* Train Mem: Memory usage during training (MB)
+* Infer/s: Inference speed (samples per second)
+* Infer Mem: Memory usage during inference (MB)
+
+### Advanced performance analysis
+
+dAditionally, the `usage_example/` directory contains scripts for advanced analyses, including:
+
+* 2D cloud points comparing throughput and memory consumption across all algorithms
+* Scalability studies examining how performance varies with data size (samples, features, output size)
+* Analysis of algorithm performance as the number of CPU cores increases, helping identify which algorithms benefit most from parallel processing
 
 ## 📦 Installation
 Work in progress: Incoming pip install instructions.

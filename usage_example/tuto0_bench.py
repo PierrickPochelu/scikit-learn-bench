@@ -1,5 +1,4 @@
-from src.core import bench
-
+from src.scikit_learn_bench.core import bench
 bench(
         num_samples=10,
         num_features=2,

@@ -1,13 +1,14 @@
 import unittest
-from src.core import bench
-from src import CONST
+from src.scikit_learn_bench.core import bench
+from src.scikit_learn_bench import CONST
+
 
 def is_scores_type_valid(scores)->bool:
     for ml_algo_name, score_vector in scores.items():
         if not isinstance(ml_algo_name,str):
             return False
         for v in score_vector:
-            is_valid = isinstance(v,float) or isinstance(v,int) or v==CONST.NANSTR
+            is_valid = isinstance(v,float) or isinstance(v,int) or v == CONST.NANSTR
             if not is_valid:
                 return False
     return True

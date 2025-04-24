@@ -1,6 +1,6 @@
-from src.core import bench
-from src.display import print_table
-from src import CONST
+from src.scikit_learn_bench.core import bench
+from src.scikit_learn_bench.display import print_table
+from src.scikit_learn_bench import CONST
 
 all_scores = {}
 model_counts = {}
@@ -34,7 +34,7 @@ for ml_category, num_output in categories:
 
 print_table(all_scores)
 print("Number of ML algo retrieved: ", len(all_scores))
-print("Number of ML algo inference retrieved: ", len([s[1] for s in all_scores if s!=CONST.NANSTR]))
+print("Number of ML algo inference retrieved: ", len([s[1] for s in all_scores if s != CONST.NANSTR]))
 
 #######
 

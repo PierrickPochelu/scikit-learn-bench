@@ -1,13 +1,14 @@
 from typing import *
 
-from src import CONST
+from src.scikit_learn_bench import CONST
+
 
 def sort_dict(d, ml_criteria):
     if ml_criteria == 0:
         return dict(sorted(d.items()))
     else:
         index = ml_criteria - 1
-        return dict(sorted(d.items(), key=lambda item: item[1][index] if item[1][index]!=CONST.NANSTR else -1))
+        return dict(sorted(d.items(), key=lambda item: item[1][index] if item[1][index] != CONST.NANSTR else -1))
 
 def smart_round(number:float):
     """

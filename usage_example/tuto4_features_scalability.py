@@ -1,8 +1,6 @@
-from src.core import bench
-from src.display import print_table
-from src import CONST
-
-
+from src.scikit_learn_bench.core import bench
+from src.scikit_learn_bench.display import print_table
+from src.scikit_learn_bench import CONST
 
 # Run benchmarks
 categories = [
