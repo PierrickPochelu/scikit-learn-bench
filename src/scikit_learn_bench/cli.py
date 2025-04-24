@@ -1,6 +1,6 @@
 import argparse
-from src.scikit_learn_bench.core import bench
-from src.scikit_learn_bench.all_bench import all_bench
+from scikit_learn_bench.core import bench
+from scikit_learn_bench.all_bench import all_bench
 
 def main():
     parser = argparse.ArgumentParser(

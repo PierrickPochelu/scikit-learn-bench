@@ -3,7 +3,7 @@ import os
 import shutil
 
 from tests.test_core import is_scores_type_valid
-from src.scikit_learn_bench.core import bench
+from scikit_learn_bench.core import bench
 
 PROFILER_PATH="profiling"
 

@@ -1,4 +1,4 @@
-from src.scikit_learn_bench.all_bench import all_bench
+from scikit_learn_bench.all_bench import all_bench
 all_bench(
         num_samples=10,
         num_features=2,

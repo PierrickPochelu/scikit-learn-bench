@@ -22,7 +22,7 @@ from sklearn.base import RegressorMixin, ClassifierMixin, ClusterMixin, Transfor
 import numpy as np
 from typing import Callable, Dict, Tuple, Union, List
 
-from src.scikit_learn_bench import default_params, profiler, CONST, display
+from scikit_learn_bench import default_params, profiler, CONST, display
 
 
 def _bench_1_model(

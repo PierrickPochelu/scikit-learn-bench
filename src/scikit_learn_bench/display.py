@@ -1,6 +1,6 @@
 from typing import *
 
-from src.scikit_learn_bench import CONST
+from scikit_learn_bench import CONST
 
 
 def sort_dict(d, ml_criteria):

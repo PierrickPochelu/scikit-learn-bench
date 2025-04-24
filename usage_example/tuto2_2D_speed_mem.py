@@ -1,6 +1,6 @@
-from src.scikit_learn_bench.core import bench
-from src.scikit_learn_bench.display import print_table
-from src.scikit_learn_bench import CONST
+from scikit_learn_bench.core import bench
+from scikit_learn_bench.display import print_table
+from scikit_learn_bench import CONST
 
 all_scores = {}
 model_counts = {}

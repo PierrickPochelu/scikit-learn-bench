@@ -6,7 +6,7 @@ import pstats
 from functools import wraps
 from typing import Any, Callable, Tuple
 
-from src.scikit_learn_bench import CONST
+from scikit_learn_bench import CONST
 
 
 # ---------------------------

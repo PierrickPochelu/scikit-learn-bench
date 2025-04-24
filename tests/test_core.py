@@ -1,6 +1,6 @@
 import unittest
-from src.scikit_learn_bench.core import bench
-from src.scikit_learn_bench import CONST
+from scikit_learn_bench.core import bench
+from scikit_learn_bench import CONST
 
 
 def is_scores_type_valid(scores)->bool:

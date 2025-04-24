@@ -2,8 +2,8 @@ import unittest
 from io import StringIO
 import sys
 
-from src.scikit_learn_bench import CONST
-from src.scikit_learn_bench.display import print_table, smart_round
+from scikit_learn_bench import CONST
+from scikit_learn_bench.display import print_table, smart_round
 
 class TestUtilityFunctions(unittest.TestCase):
 

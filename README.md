@@ -1,6 +1,6 @@
 # scikit-learn-bench
 
-Benchmark **160 scikit-learn Machine Learning algorithms** at once — in just a few seconds.
+Benchmark **100+ scikit-learn Machine Learning algorithms** at once — in just a few seconds.
 
 This tool offers an easy way to evaluate models across multiple ML categories and profiling strategies.
 
@@ -20,17 +20,19 @@ Easily control the characteristics of synthetic datasets:
 
 ### 🧠 ML Algorithm Types
 
-| Type | Label | Description                                                       |
-|------|-------|-------------------------------------------------------------------|
-| Regressors | `"reg"` | 51 algorithms with `.fit` and `.predict`                          |
-| Classifiers | `"cla"` | 41 algorithms with `.fit` and `.predict`                          |
-| Clustering | `"clu"` | 12 clustering algorithms (`predict` supported for 6)              |
-| Transformers | `"tra"` | 57 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
+| Type            | Label | Description                                                       |
+|-----------------|-------|-------------------------------------------------------------------|
+| Regressors      | `"reg"` | 51 algorithms with 2 functions `.fit` and `.predict`              |
+| Classifiers     | `"cla"` | 41 algorithms with 2 functions `.fit` and `.predict`              |
+| Clustering      | `"clu"` | 12 clustering algorithms (`predict` supported for 6)              |
+| Transformations | `"tra"` | 57 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
 
-
-> Some algorithms are callable in some specific conditions. 29 regressors manages multiple target regressions, 22 regressors are scalar only.
+In total, the tool allows benchmarking 259 scikit-learn functions.
 
 > The exact counts may vary depending on your installed `scikit-learn` version (here 1.3.0) and other dependencies.
+
+> Some algorithms are callable in some specific conditions. 29 regressors manage multiple targets, 22 regressors manage 1 target only.
+
 
 
 ---
@@ -64,6 +66,8 @@ Choose one of three profiler types:
 
 ## 🧪 Example Usage
 
+
+
 ### CLI
 
 Installing scikit_learn_bench add it in your path and can be directly called
@@ -73,12 +77,7 @@ pierrick@laptop:~$ pip3 install ./dist/scikit_learn_bench-0.0.1.tar.gz
 pierrick@laptop:~$ scikit_learn_bench
 ```
 
-After 4 seconds, output:
-
-
-
 For more information: `scikit_learn_bench --help`
-
 
 
 ### Programming interface (advanced)
