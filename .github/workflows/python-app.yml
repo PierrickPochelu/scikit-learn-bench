@@ -79,6 +79,7 @@ jobs:
       - name: Install and test wheel
         run: |
           echo "Installing the built wheel..."
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install dist/*.whl
           echo "Testing the wheel"
           scikit_learn_bench && echo "Test CLI passed!" || echo "Test CLI failed!"
