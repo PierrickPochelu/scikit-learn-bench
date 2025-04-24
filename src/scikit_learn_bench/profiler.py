@@ -52,15 +52,31 @@ class TimeMemoryProfiler(ProfilerStrategy):
 # ---------------------------
 def Profiling(output_file="profile.prof", sort_by="time", print_stats=100):
     def decorator(func):
+        """
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper0(*args, **kwargs):
             profiler = cProfile.Profile()
-            profiler.enable()
+            profiler.enable() # raises sometimes "RuntimeError: Cannot install a profile function while another profile function is being installed"
             result = func(*args, **kwargs)
             profiler.disable()
             profiler.dump_stats(output_file)
             stats = pstats.Stats(output_file)
             stats.strip_dirs().sort_stats(sort_by).print_stats(print_stats)
+            return result
+        """
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            profiler = cProfile.Profile()
+            result = CONST.NANSTR
+            try:
+                profiler.enable()
+                result = func(*args, **kwargs)
+            finally:
+                profiler.disable()
+                profiler.dump_stats(output_file)
+                stats = pstats.Stats(output_file)
+                stats.strip_dirs().sort_stats(sort_by).print_stats(print_stats)
             return result
         return wrapper
     return decorator

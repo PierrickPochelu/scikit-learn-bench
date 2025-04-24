@@ -31,9 +31,9 @@ Easily control the characteristics of synthetic datasets:
 | Regressors      | `"reg"` | 52 algorithms with 2 functions `.fit` and `.predict`              |
 | Classifiers     | `"cla"` | 41 algorithms with 2 functions `.fit` and `.predict`              |
 | Clustering      | `"clu"` | 12 clustering algorithms (`predict` supported for 6)              |
-| Transformations | `"tra"` | 52 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
+| Transformations | `"tra"` | 57 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
 
-In total, the tool allows benchmarking 256 scikit-learn functions (52*2+41*2+12+6+52).
+In total, the tool allows benchmarking 261 scikit-learn functions (52*2+41*2+12+6+57).
 
 > The exact counts may vary depending on your installed `scikit-learn` version (here 1.6.1) and other dependencies.
 
