@@ -11,7 +11,7 @@ Functions
 train_model(reg, X_train, y_train, T, score)
     Train and evaluate the performance of a machine learning model.
 
-bench(num_samples, num_features, fix_comp_time, reg_or_cls="reg", nb_output=1)
+bench(num_samples, num_features, min_prof_time, max_prof_time, reg_or_cls="reg", nb_output=1)
     Benchmark training and inference times of scikit-learn models across categories.
 """
 import numpy as np

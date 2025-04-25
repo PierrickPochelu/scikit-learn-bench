@@ -24,7 +24,8 @@ for num_features in features:
             num_samples=10,
             num_features=num_features,
             num_output=num_output,
-            fix_comp_time=0.1,
+            min_prof_time=0.1,
+            max_prof_time=60.,
             ml_type=ml_category,
             profiler_type="timememory",
             table_print=False
