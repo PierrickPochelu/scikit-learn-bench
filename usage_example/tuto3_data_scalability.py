@@ -1,42 +1,24 @@
-from scikit_learn_bench.core import bench
+from scikit_learn_bench.all_bench import all_bench
 from scikit_learn_bench.display import print_table
 from scikit_learn_bench import CONST
 
 # Run benchmarks
-categories = [
-    ("clu", 2),
-    ("tra", 1),
-    ("cla", 2),
-    ("reg", 1),
-    ("reg", 2)
-]
 
 timesteps_score=[]
 
 sample_sizes = [10, 100]
 for num_samples in sample_sizes:
 
-    all_scores = {}
-    model_counts = {}
+    all_scores = all_bench(
+        num_samples=num_samples,
+        num_features=2,
+        num_output=2,
+        min_prof_time=0.1,
+        ml_type="all",
+        profiler_type="timememory",
+        table_print=False
+    )
 
-    for ml_category, num_output in categories:
-        scores = bench(
-            num_samples=num_samples,
-            num_features=2,
-            num_output=num_output,
-            fix_comp_time=0.1,
-            ml_type=ml_category,
-            profiler_type="timememory",
-            table_print=False
-        )
-
-        for model_name, result in scores.items():
-            if model_name in model_counts:
-                model_counts[model_name] += 1
-                all_scores[f"{model_name}{model_counts[model_name]}"] = result
-            else:
-                model_counts[model_name] = 1
-                all_scores[model_name] = result
 
     timesteps_score.append(all_scores)
 

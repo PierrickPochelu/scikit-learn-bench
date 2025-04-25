@@ -6,7 +6,8 @@ from scikit_learn_bench import CONST
 def all_bench(num_samples: int = 100,
           num_features: int = 100,
           num_output: int = 2,
-          fix_comp_time: float = 0.1,
+          min_prof_time: float = 0.1,
+          max_prof_time: float = 60.,
           ml_type: str = "cla", # ignored
           profiler_type: str = "time",
           table_print: bool = True,
@@ -19,7 +20,6 @@ def all_bench(num_samples: int = 100,
     categories = [
         ("clu", num_output),
         ("tra", num_output),
-        ("tra", 1),
         ("cla", num_output),
         ("reg", num_output),
         ("reg", 1)
@@ -30,7 +30,8 @@ def all_bench(num_samples: int = 100,
             num_samples=num_samples,
             num_features=num_features,
             num_output=num_output,
-            fix_comp_time=fix_comp_time,
+            min_prof_time=min_prof_time,
+            max_prof_time=max_prof_time,
             ml_type=ml_category,
             profiler_type=profiler_type,
             table_print=False, # not individually display
@@ -46,6 +47,8 @@ def all_bench(num_samples: int = 100,
                 num_collected_algos += 1
         print(f"Num collected algos in categ. '{ml_category} output size:{num_output}': {num_collected_algos}")
 
-    print("Number of ML algo retrieved: ", len(all_scores))
-    print("Performance collected:")
-    print_table(all_scores, table_print_sort_crit)
+    if table_print:
+        print("Number of ML algo retrieved: ", len(all_scores))
+        print("Performance collected:")
+        print_table(all_scores, table_print_sort_crit)
+    return all_scores

@@ -13,18 +13,24 @@ from scikit_learn_bench import CONST
 # Strategy Base
 # ---------------------------
 class ProfilerStrategy:
-    def profile(self, func: Callable, T: float, *func_args) -> Any:
+    def profile(self, func: Callable, min_prof_time: float, *func_args) -> Any:
         raise NotImplementedError("Must override in subclass")
+    def get_default(self):
+        return NotImplementedError("Must override in subclass")
+    def profile_training(self, func: Callable, min_prof_time: float, *func_args) -> Tuple[object, object]:
+        p = self.profile(func, min_prof_time, *func_args)
+        trained_model = func.__self__
+        return p, trained_model
 
 # ---------------------------
 # Time-Only Profiler
 # ---------------------------
 class TimeProfiler(ProfilerStrategy):
-    def profile(self, func: Callable, T: float, *func_args) -> float:
+    def profile(self, func: Callable, min_prof_time: float, *func_args) -> float:
         time_count = 0
         start_time = time.time()
 
-        while time.time() < start_time + T:
+        while time.time() < start_time + min_prof_time:
             func(*func_args)
             time_count += 1
 
@@ -33,6 +39,11 @@ class TimeProfiler(ProfilerStrategy):
         samples_per_sec = (data_chunk_size * time_count) / elapsed if elapsed else 0
         return round(samples_per_sec, CONST.ROUNDING)
 
+    def get_default(self):
+        return CONST.NANSTR
+
+
+
 # ---------------------------
 # Time + Memory Profiler (tracemalloc)
 # ---------------------------
@@ -40,13 +51,15 @@ class TimeMemoryProfiler(ProfilerStrategy):
     def __init__(self):
         self.time_profiler = TimeProfiler()
 
-    def profile(self, func: Callable, T: float, *func_args) -> Tuple[float, float]:
+    def profile(self, func: Callable, min_prof_time: float, *func_args) -> Tuple[float, float]:
         tracemalloc.start()
-        throughput = self.time_profiler.profile(func, T, *func_args)
+        throughput = self.time_profiler.profile(func, min_prof_time, *func_args)
         _, peak_mem = tracemalloc.get_traced_memory()
         tracemalloc.stop()
         return throughput, round(peak_mem / 1024, CONST.ROUNDING)  # KB
 
+    def get_default(self):
+        return CONST.NANSTR, CONST.NANSTR
 # ---------------------------
 # cProfile Decorator Wrapper
 # ---------------------------
@@ -97,12 +110,15 @@ class TimeLineProfiler(ProfilerStrategy):
         filename = f"{name}.prof"
         return os.path.join(self.profile_folder_path, filename)
 
-    def profile(self, func: Callable, T: float, *func_args) -> float:
+    def profile(self, func: Callable, min_prof_time: float, *func_args) -> float:
         file_path = self._build_filename(func, *func_args)
         profiler_decorator = Profiling(output_file=file_path, sort_by="time", print_stats=20)
 
         @profiler_decorator
         def _profiled_call():
-            return self.time_profiler.profile(func, T, *func_args)
+            return self.time_profiler.profile(func, min_prof_time, *func_args)
 
         return _profiled_call()
+
+    def get_default(self):
+        return CONST.NANSTR

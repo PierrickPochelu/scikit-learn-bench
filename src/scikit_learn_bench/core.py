@@ -14,49 +14,32 @@ train_model(reg, X_train, y_train, T, score)
 bench(num_samples, num_features, fix_comp_time, reg_or_cls="reg", nb_output=1)
     Benchmark training and inference times of scikit-learn models across categories.
 """
+import numpy as np
+from typing import Callable, Dict, Tuple, Union, List
+import concurrent.futures
 
 from sklearn.datasets import make_classification, make_regression
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.utils import all_estimators
 from sklearn.base import RegressorMixin, ClassifierMixin, ClusterMixin, TransformerMixin
-import numpy as np
-from typing import Callable, Dict, Tuple, Union, List
 
 from scikit_learn_bench import default_params, profiler, CONST, display
-
+from scikit_learn_bench import Timeout
 
 def _bench_1_model(
         model_constructor: Callable,
         X: np.ndarray,
         y: np.ndarray,
         data_params: Dict[str, int],
-        max_time: float,
+        min_prof_time: float,
+        max_prof_time: float,
         results: Dict[str, Union[Tuple[float, float], Tuple[float, float, float, float]]],
-        profiler: profiler.ProfilerStrategy
+        profilerImpl: profiler.ProfilerStrategy
 ) -> None:
-    """
-    Train and benchmark a single machine learning model using a given profiler strategy.
-
-    Parameters
-    ----------
-    model_constructor : Callable
-        Constructor for the machine learning model.
-    X : np.ndarray
-        Input feature matrix.
-    y : np.ndarray
-        Target vector or matrix.
-    data_params : dict
-        Parameters for preparing data.
-    max_time : float
-        Maximum benchmarking time.
-    results : dict
-        Dictionary to collect results.
-    profiler : ProfilerStrategy
-        The profiler implementation to use (TimeProfiler, TimeMemoryProfiler, or TimeLineProfiler).
-    """
     model_name = model_constructor.__name__
+    train_result = profilerImpl.get_default()
+    infer_result = profilerImpl.get_default()
 
-    # Get default hyperparameters and possibly modified X, y
     try:
         kwargs, X, y = default_params.get_ml_default_params(model_name, X, y, data_params)
         model = model_constructor(**kwargs)
@@ -66,29 +49,32 @@ def _bench_1_model(
             print(f"[Constructor Error] {model_name}: {e}")
         return
 
-    # Benchmark training
     try:
-        train_result = profiler.profile(model.fit, max_time, X, y)
+        if CONST.IS_MAX_PROF_TIME:
+            train_result, model = Timeout.timeout_warp(profilerImpl.profile_training, timeout=max_prof_time)(model.fit, min_prof_time, X, y)
+        else:
+            train_result = profilerImpl.profile(model.fit, min_prof_time, X, y)
     except Exception as e:
         if CONST.DISPLAY_WARNING:
             print(f"[Training Error] {model_display_name}.fit: {e}")
-        return
 
-    # Benchmark inference
-    try:
-        infer_result = profiler.profile(model.predict, max_time, X)
-    except Exception as e:
-        if CONST.DISPLAY_WARNING:
-            print(f"[Inference Error] {model_display_name}.predict: {e}")
-        infer_result = (CONST.NANSTR, CONST.NANSTR) if isinstance(train_result, tuple) else CONST.NANSTR
+    is_fitted = train_result != profilerImpl.get_default()
+    if is_fitted:
+        try:
+            if CONST.IS_MAX_PROF_TIME:
+                infer_result = Timeout.timeout_warp(profilerImpl.profile, timeout=max_prof_time)(model.predict, min_prof_time, X)
+            else:
+                infer_result = profilerImpl.profile(model.predict, min_prof_time, X)
+        except Exception as e:
+            if CONST.DISPLAY_WARNING:
+                print(f"[Inference Error] {model_display_name}.predict: {e}")
 
-    # Store results with or without memory depending on the profiler type
-    if isinstance(train_result, tuple):
-        results[model_display_name] = (
-            train_result[0], infer_result[0], train_result[1], infer_result[1]
-        )
-    else:
-        results[model_display_name] = (train_result, infer_result)
+    def comb(train_result, infer_result):
+        if isinstance(train_result,tuple) and isinstance(infer_result, tuple):
+            return train_result+infer_result
+        else:
+            return (train_result, infer_result)
+    results[model_display_name] = comb(train_result, infer_result)
 
 def get_db(ml_category: str, **kwargs) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -166,12 +152,13 @@ def get_constructors(ml_category: str) -> List[Callable]:
 def bench(num_samples: int = 1000,
           num_features: int = 100,
           num_output: int = 2,
-          fix_comp_time: float = 1.0,
+          min_prof_time: float = 0.1,
+          max_prof_time: float = 60.,
           ml_type: str = "cla",
           profiler_type: str = "time",
           table_print: bool = True,
           table_print_sort_crit: int = 1,
-          line_profiler_path:str = "."
+          line_profiler_path: str = "."
           ) -> Dict[str, Tuple]:
     """
     Benchmark scikit-learn models for training/inference time (and memory optionally).
@@ -184,7 +171,7 @@ def bench(num_samples: int = 1000,
         Number of features.
     num_output : int
         Output dimensionality: targets, classes, or clusters.
-    fix_comp_time : float
+    min_prof_time : float
         Max time allowed for training each model (in seconds).
     ml_type : str
         Type of models: 'cla' (default), 'reg', 'clu', 'tra', 'all'.
@@ -219,7 +206,6 @@ def bench(num_samples: int = 1000,
     }
     X_train, y_train = get_db(ml_type, **data_params)
 
-
     if profiler_type=="time":
         prof= profiler.TimeProfiler()
     elif profiler_type=="timememory":
@@ -231,7 +217,7 @@ def bench(num_samples: int = 1000,
 
     results = {}
     for _, constructor in model_constructors:
-        _bench_1_model(constructor, X_train, y_train, data_params, fix_comp_time, results, prof)
+        _bench_1_model(constructor, X_train, y_train, data_params, min_prof_time, max_prof_time, results, prof)
 
     if table_print:
         display.print_table(results, table_print_sort_crit)

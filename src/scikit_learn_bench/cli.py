@@ -45,7 +45,7 @@ def main():
             num_samples=args.num_samples,
             num_features=args.num_features,
             num_output=args.num_output,
-            fix_comp_time=args.fix_comp_time,
+            min_prof_time=args.fix_comp_time,
             ml_type=args.ml_type,
             profiler_type=args.profiler_type,
             table_print=True,

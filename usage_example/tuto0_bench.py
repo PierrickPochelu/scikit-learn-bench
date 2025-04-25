@@ -1,9 +1,9 @@
 from scikit_learn_bench.core import bench
-bench(
+scores=bench(
         num_samples=10,
         num_features=2,
         num_output=2,
-        fix_comp_time=0.1,
+        min_prof_time=0.1,
         ml_type="cla",
         profiler_type="timememory",
         table_print=True,

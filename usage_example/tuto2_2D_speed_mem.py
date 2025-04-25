@@ -1,40 +1,21 @@
-from scikit_learn_bench.core import bench
+from scikit_learn_bench.all_bench import all_bench
 from scikit_learn_bench.display import print_table
 from scikit_learn_bench import CONST
 
-all_scores = {}
-model_counts = {}
+scores = all_bench(
+    num_samples=100,
+    num_features=100,
+    num_output=2,
+    min_prof_time=1.,
+    ml_type="all",
+    profiler_type="timememory",
+    table_print=False
+)
 
-# Run benchmarks
-categories = [
 
-    ("reg", 1),
-    ("reg", 2)
-]
-
-for ml_category, num_output in categories:
-    scores = bench(
-        num_samples=10,
-        num_features=2,
-        num_output=num_output,
-        fix_comp_time=0.1,
-        ml_type=ml_category,
-        profiler_type="timememory",
-        table_print=False
-    )
-
-    for model_name, result in scores.items():
-        if model_name in model_counts:
-            pass
-            #model_counts[model_name] += 1
-            #all_scores[f"{model_name}{model_counts[model_name]}"] = result
-        else:
-            model_counts[model_name] = 1
-            all_scores[model_name] = result
-
-print_table(all_scores)
-print("Number of ML algo retrieved: ", len(all_scores))
-print("Number of ML algo inference retrieved: ", len([s[1] for s in all_scores if s != CONST.NANSTR]))
+print_table(scores)
+print("Number of ML algo retrieved: ", len(scores))
+print("Number of ML algo inference retrieved: ", len([s[1] for s in scores if s != CONST.NANSTR]))
 
 #######
 
@@ -48,7 +29,7 @@ inference_memories = []
 model_names_train = []
 model_names_infer = []
 
-for name, vals in all_scores.items():
+for name, vals in scores.items():
     try:
         train_speed = float(vals[0])
         train_mem = float(vals[2])

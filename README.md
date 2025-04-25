@@ -28,18 +28,14 @@ Easily control the characteristics of synthetic datasets:
 
 | Type            | Label | Description                                                       |
 |-----------------|-------|-------------------------------------------------------------------|
-| Regressors      | `"reg"` | 52 algorithms with 2 functions `.fit` and `.predict`              |
-| Classifiers     | `"cla"` | 41 algorithms with 2 functions `.fit` and `.predict`              |
-| Clustering      | `"clu"` | 12 clustering algorithms (`predict` supported for 6)              |
-| Transformations | `"tra"` | 57 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
+| Regressors      | `"reg"` | 55 algorithms with 2 methods `.fit` and `.predict`                |
+| Classifiers     | `"cla"` | 42 algorithms with 2 methods `.fit` and `.predict`                |
+| Clustering      | `"clu"` | 12 clustering algorithms (`.predict` supported for 6)             |
+| Transformations | `"tra"` | 68 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
 
-In total, the tool allows benchmarking 261 scikit-learn functions (52*2+41*2+12+6+57).
+In total, the tool allows benchmarking 280 scikit-learn functions (55*2+42*2+12+6+68).
 
-> The exact counts may vary depending on your installed `scikit-learn` version (here 1.6.1) and other dependencies.
-
-> Some algorithms are callable in some specific conditions. 29 regressors manage multiple targets, 23 regressors manage 1 target only.
-
-
+> The exact counts may vary depending on your installed `scikit-learn` version (here 1.6.1), other dependencies, and the data characteristics (#samples, #features, #output).
 
 ---
 
@@ -90,16 +86,18 @@ scikit_learn_bench --help
 ```
 
 ### Programming interface (advanced)
+
 ```python
 from scikit_learn_bench.core import bench
-scores=bench(
-    num_samples=10,
-    num_features=2,
-    num_output=2,
-    fix_comp_time=0.1,
-    ml_type="cla",
-    profiler_type="timememory",
-    table_print=True
+
+scores = bench(
+  num_samples=10,
+  num_features=2,
+  num_output=2,
+  min_prof_time=0.1,
+  ml_type="cla",
+  profiler_type="timememory",
+  table_print=True
 )
 ```
 

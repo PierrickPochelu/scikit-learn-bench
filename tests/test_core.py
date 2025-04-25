@@ -15,7 +15,7 @@ def is_scores_type_valid(scores)->bool:
 
 class MyTestCase(unittest.TestCase):
     def test_clu(self):
-        scores = bench(num_samples=10, num_features=2, num_output=1, fix_comp_time=0.01, ml_type="clu")
+        scores = bench(num_samples=10, num_features=2, num_output=2, min_prof_time=0.01, ml_type="clu")
         self.assertGreater(len(scores), 10)
 
         self.assertTrue("KMeans" in scores)
@@ -34,7 +34,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(is_scores_type_valid(scores))
 
     def test_tra(self):
-        scores = bench(num_samples=10, num_features=2, num_output=1, fix_comp_time=0.01, ml_type="tra")
+        scores = bench(num_samples=10, num_features=2, num_output=1, min_prof_time=0.01, ml_type="tra")
         self.assertGreater(len(scores), 10)
 
         self.assertTrue("TSNE" in scores)
@@ -49,7 +49,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(is_scores_type_valid(scores))
 
     def test_cla(self):
-        scores=bench(num_samples=10, num_features=2, num_output=2, fix_comp_time=0.01, ml_type="cla")
+        scores=bench(num_samples=10, num_features=2, num_output=2, min_prof_time=0.01, ml_type="cla")
         self.assertGreater(len(scores),10)
 
         self.assertTrue("GaussianProcessClassifier" in scores)
@@ -66,7 +66,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(is_scores_type_valid(scores))
 
     def test_reg_1D(self):
-        scores = bench(num_samples=10, num_features=2, num_output=1, fix_comp_time=0.01, ml_type="reg")
+        scores = bench(num_samples=10, num_features=2, num_output=1, min_prof_time=0.01, ml_type="reg")
         self.assertTrue(len(scores) >10)
 
         self.assertTrue("KNeighborsRegressor" in scores)
@@ -83,7 +83,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(is_scores_type_valid(scores))
 
     def test_reg_nD(self):
-        scores = bench(num_samples=10, num_features=2, num_output=2, fix_comp_time=0.01, ml_type="reg")
+        scores = bench(num_samples=10, num_features=2, num_output=2, min_prof_time=0.01, ml_type="reg")
         self.assertTrue(len(scores) >10)
 
         self.assertTrue("KNeighborsRegressor" in scores)
