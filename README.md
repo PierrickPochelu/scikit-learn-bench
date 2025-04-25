@@ -33,9 +33,9 @@ Easily control the characteristics of synthetic datasets:
 | Clustering      | `"clu"` | 12 clustering algorithms (`.predict` supported for 6)             |
 | Transformations | `"tra"` | 68 transform functions (e.g. `MinMaxScaler`, `PCA`, `TSNE`, etc.) |
 
-In total, the tool allows benchmarking 280 scikit-learn functions (55*2+42*2+12+6+68).
+In total, the tool allows benchmarking 280 scikit-learn functions (55\*2+42\*2+12+6+68).
 
-> The exact counts may vary depending on your installed `scikit-learn` version (here 1.6.1), other dependencies, and the data characteristics (#samples, #features, #output).
+> The exact counts may vary depending on your installed `scikit-learn` version (here 1.6.1), the data characteristics (#samples, #features, #output), and other software dependencies.
 
 ---
 
@@ -59,7 +59,8 @@ Choose one of three profiler types:
 
 ### ⚙️ Other Parameters
 
-- `fix_comp_time`: Minimum time in seconds to run each profile (reduces noise)
+- `min_prof_time`: Minimum time in seconds to run the profiling of each function (reduces noise)
+- `max_prof_time`: Maximum time in seconds to run the profiling. If the delay is reached, a timeout interrupts the computation.
 - `table_print`: Display formatted results in console
 - `table_print_sort_crit`: Sort results (e.g., by training speed)
 - `line_profiler_path`: Path to store `.prof` files for `"timeline"` profiler

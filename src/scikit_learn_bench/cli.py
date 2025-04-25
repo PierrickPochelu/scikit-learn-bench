@@ -13,8 +13,10 @@ def main():
                         help='Number of features (default: 100)')
     parser.add_argument('--num-output', type=int, default=2,
                         help='Number of output classes/targets/clusters (default: 2)')
-    parser.add_argument('--fix-comp-time', type=float, default=0.1,
-                        help='Max time (seconds) allowed for training each model (default: 1.0)')
+    parser.add_argument('--min-prof-time', type=float, default=0.1,
+                        help='Min time (seconds) for measuring the speed of each function (default: 0.1)')
+    parser.add_argument('--max-prof-time', type=float, default=60,
+                        help='Max time (seconds) allowed for training each model (default: 60.)')
     parser.add_argument('--ml-type', type=str, choices=['cla', 'reg', 'clu', 'tra', 'all'], default='all',
                         help="Type of ML task: 'cla', 'reg', 'clu', 'tra', 'all' (default: 'all')")
     parser.add_argument('--profiler-type', type=str, choices=['time', 'timememory', 'timeline'], default='time',
@@ -33,7 +35,8 @@ def main():
             num_samples=args.num_samples,
             num_features=args.num_features,
             num_output=args.num_output,
-            fix_comp_time=args.fix_comp_time,
+            min_prof_time=args.min_prof_time,
+            max_prof_time=args.max_prof_time,
             ml_type=args.ml_type,
             profiler_type=args.profiler_type,
             table_print=True,
@@ -45,7 +48,8 @@ def main():
             num_samples=args.num_samples,
             num_features=args.num_features,
             num_output=args.num_output,
-            min_prof_time=args.fix_comp_time,
+            min_prof_time=args.min_prof_time,
+            max_prof_time=args.max_prof_time,
             ml_type=args.ml_type,
             profiler_type=args.profiler_type,
             table_print=True,

@@ -1,12 +1,14 @@
 from scikit_learn_bench.all_bench import all_bench
 from scikit_learn_bench.display import print_table
 from scikit_learn_bench import CONST
+CONST.IS_MAX_PROF_TIME=True
 
 scores = all_bench(
-    num_samples=100,
-    num_features=100,
+    num_samples=1000,
+    num_features=1000,
     num_output=2,
     min_prof_time=1.,
+    max_prof_time=100.,
     ml_type="all",
     profiler_type="timememory",
     table_print=False
