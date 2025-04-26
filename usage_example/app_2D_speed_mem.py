@@ -8,18 +8,17 @@ scores = all_bench(
     num_features=1000,
     num_output=2,
     min_prof_time=1.,
-    max_prof_time=100.,
+    max_prof_time=60.,
     ml_type="all",
     profiler_type="timememory",
     table_print=False
 )
 
-
 print_table(scores)
 print("Number of ML algo retrieved: ", len(scores))
 print("Number of ML algo inference retrieved: ", len([s[1] for s in scores if s != CONST.NANSTR]))
 
-#######
+#### VIZUALISATION ###
 
 import matplotlib.pyplot as plt
 
@@ -49,9 +48,6 @@ for name, vals in scores.items():
         model_names_infer.append(name)
     except (ValueError, ZeroDivisionError, TypeError):
         continue
-
-# Create scatter plots
-
 
 # Plot 1: Training
 plt.figure(figsize=(8, 8))

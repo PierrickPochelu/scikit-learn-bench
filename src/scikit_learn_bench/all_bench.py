@@ -21,8 +21,7 @@ def all_bench(num_samples: int = 100,
         ("clu", num_output),
         ("tra", num_output),
         ("cla", num_output),
-        ("reg", num_output),
-        ("reg", 1)
+        ("reg", num_output)
     ]
 
     for ml_category, num_output in categories:
@@ -45,7 +44,7 @@ def all_bench(num_samples: int = 100,
             else:
                 all_scores[model_name] = result
                 num_collected_algos += 1
-        print(f"Num collected algos in categ. '{ml_category} output size:{num_output}': {num_collected_algos}")
+        print(f"Num collected algos in category '{ml_category}': {num_collected_algos}")
 
     if table_print:
         print("Number of ML algo retrieved: ", len(all_scores))
